@@ -1,5 +1,14 @@
 [
   {
+    "title": "product1",
+    "description": "cartera de cuero",
+    "price": 15000,
+    "thumbail": "imagen",
+    "code": "abc01",
+    "stock": 30,
+    "id": 1
+  },
+  {
     "title": "product2",
     "description": "billetera de cuero",
     "price": 3000,
@@ -33,15 +42,6 @@
     "thumbail": "imagen",
     "code": "abc05",
     "stock": 15,
-    "id": 5
-  },
-  {
-    "title": "product1",
-    "description": "cartera de cuero",
-    "price": 15000,
-    "thumbail": "imagen",
-    "code": "abc01",
-    "stock": 30,
     "id": 5
   }
 ]

@@ -16,9 +16,12 @@ class ProductManager {
                 const ProductsData = await fs.promises.readFile(this.path, 'utf-8')    
                 const ProductsJs = await JSON.parse(ProductsData)                          
                 return ProductsJs
-            }        
+            }else {
+                return []
+            }   
+
         } catch (error) {
-            return []               
+            console.log ("Error en lectura de productos")               
         }
     }
     
@@ -28,7 +31,8 @@ class ProductManager {
         try {
             const productsList = await this.readFileProducts ()
 
-            if (!product.title ||                   //validación que todos los campos sean obligatorios
+            //validación que todos los campos sean obligatorios
+            if (!product.title ||                   
             !product.description ||
             !product.price ||
             !product.thumbail ||
@@ -48,7 +52,7 @@ class ProductManager {
             productsList.push(product)
             await fs.promises.writeFile(this.path, JSON.stringify(productsList, null, 2))
             return product
-            
+                        
         } catch (error) {
             console.log(error)
         }
@@ -60,22 +64,22 @@ class ProductManager {
             const ProductsJson = await fs.promises.readFile (this.path)
             const ProductsJs = JSON.parse (ProductsJson)
             console.log (ProductsJs)
-            
+
         } catch (error) {
             console.log(error)
         }
-        
     } 
+
 
 //método para buscar en array producto por el id
     async getProductsById (id) {
         try {
-            await this.readFileProducts ()    
-            const buscarId = this.products.find (product => product.id === id)
+            const productsId = await this.readFileProducts ()
+            const buscarId = productsId.find (product => product.id === id)
             if (buscarId) {
                 return buscarId
             } else {
-                return "Not found"
+                return "Not found product"
         }
         } catch (error) {
             console.log(error)
@@ -87,10 +91,11 @@ class ProductManager {
     async updateProduct (id, price, newValue) {
         try {
             const datosActuales = await this.readFileProducts () 
-            const elemActualizar = datosActuales.find(product => product.id === id)
+            const elemActualizar = datosActuales.find (product => product.id === id)
             if (elemActualizar) {
-                elemActualizar [price] = newValue
-                await this.addProduct (datosActuales)
+                elemActualizar[price] = newValue
+                await fs.promises.writeFile(this.path, JSON.stringify(datosActuales, null, 2))
+                return elemActualizar
             } else {
                 console.log ("No se encontró el id indicado")
         }
@@ -114,7 +119,7 @@ class ProductManager {
         } catch (error) {
             console.error(error);
         }
-        }
+    } 
 }
 
 //creación de productos 
@@ -171,9 +176,9 @@ const test = async () => {
     console.log(await products.addProduct(product4))
     console.log(await products.addProduct(product5))
     console.log(await products.getProducts())
-    console.log(await products.getProductsById(1))
-    console.log(await products.updateProduct(5, "price", 20000))
-    //console.log(await products.deleteProduct(1))
+    //console.log(await products.getProductsById(7))
+    //console.log(await products.updateProduct(5, "price", 2300))
+    //console.log(await products.deleteProduct(5))
 }
 
 test ()
